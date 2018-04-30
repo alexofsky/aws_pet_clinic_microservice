@@ -62,7 +62,8 @@ def create_ecs_cluster(stack_name):
             {
                 'Name': 'name',
                 'Values': [
-                    'amzn-ami-2016.09.f-amazon-ecs-optimized',
+                    'amzn-ami-2017.09.l-amazon-ecs-optimized',
+                    #'amzn-ami-2016.09.f-amazon-ecs-optimized',
                 ]
             },
         ]
@@ -102,7 +103,11 @@ def create_ecs_cluster(stack_name):
                 },
                 {
                     'ParameterKey': 'EcsInstanceType',
-                    'ParameterValue': 'm4.large',
+                    # Changing default to t2.micro instances.
+                    # make sure memory allocation within container definitions for EC2 instances makes sense for 
+                    # EC2 max resources as defined by Amazon.   The setting around 710 in this script.  For t2.micro set to 512MB.
+                    #'ParameterValue': 'm4.large'
+                    'ParameterValue': 't2.micro',
                     'UsePreviousValue': True
                 },
                 {
@@ -177,7 +182,11 @@ def create_ecs_cluster_mysql(stack_name, stack_name_ecs_cluster, vpc_id, subnet1
                 },
                 {
                     'ParameterKey': 'InstanceType',
-                    'ParameterValue': 'm4.large'
+                    # Changing default to t2.micro instances for MySQL instance.
+                    # make sure memory allocation within container definitions for mysql is appropriate given 
+                    # max resources as defined by Amazon.   The setting around 291 in this script.  For t2.micro set to 512MB.
+                    #'ParameterValue': 'm4.large'
+                    'ParameterValue': t2.micro
                 }
             ],
             TimeoutInMinutes=123,
@@ -277,8 +286,10 @@ def create_ecs_cluster_mysql(stack_name, stack_name_ecs_cluster, vpc_id, subnet1
                     }
                 ],
                 'image': 'mysql',
-                'cpu': 1024,
-                'memory': 1024,
+                #'cpu': 1024,
+                'cpu': 500,
+                #'memory': 1024,
+                'memory': 512,
                 'essential': True,
                 'portMappings': [
                     {
@@ -696,7 +707,8 @@ def setup(project_name='spring-petclinic-rest', service_list={'spring-petclinic-
                         'hostPort': 0
                     }
                 ],
-                'memory': 1024,
+                #'memory': 1024,
+                'memory': 512,
                 'cpu': 500,
                 'environment': [
                     {
