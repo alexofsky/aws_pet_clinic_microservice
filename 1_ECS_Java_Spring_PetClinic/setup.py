@@ -778,7 +778,7 @@ def setup(project_name='spring-petclinic-rest', service_list={'spring-petclinic-
     return elb_dns
 
 
-def cleanup(project_name='spring-petclinic-rest', service_list={'spring-petclinic-rest': '8080'}, region='us-east-1'):
+def cleanup(project_name='spring-petclinic-rest', service_list={'spring-petclinic-rest': '8080'}, region='us-west-2'):
     ecr_client = boto3.client('ecr')
     ecs_client = boto3.client('ecs')
     elbv2_client = boto3.client('elbv2')
